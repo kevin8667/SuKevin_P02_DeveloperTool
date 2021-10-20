@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
-public class PhysicalData : MonoBehaviour
+[CreateAssetMenuAttribute(fileName = "New Physical Data", menuName = "Ability Data/Physical")]
+public class PhysicalData : AbilityData
 {
-    // Start is called before the first frame update
-    void Start()
+    public PhysicalType _physicalType;
+    public PhysicalAttributeType _physicalAttributeType;
+    public ElementalType _elementalType;
+
+    public override void Use()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

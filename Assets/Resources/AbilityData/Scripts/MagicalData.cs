@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
-public class MagicalData : MonoBehaviour
+[CreateAssetMenuAttribute(fileName = "New Magical Data", menuName = "Ability Data/Magical")]
+public class MagicalData : AbilityData
 {
-    // Start is called before the first frame update
-    void Start()
+    public MagicalType _magicalType;
+    public MagicalAttributeType _magicalAttributeType;
+    public ElementalType _elementalType;
+
+    public override void Use()
     {
-        
+        Debug.Log(_magicalType);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
