@@ -23,17 +23,19 @@ public class AbilityBuilderWindow : EditorWindow
 
     static MagicalData _magicalData;
     static PhysicalData _physicalData;
+
     static CreateList.ListType _listType;
 
     public static MagicalData MagicInfo { get { return _magicalData; } }
     public static PhysicalData PhysicInfo { get { return _physicalData; } }
+    
 
 
    [MenuItem("Window/Ability Builder")]
    static void OpenWindow()
     {
         AbilityBuilderWindow _window = (AbilityBuilderWindow)GetWindow(typeof(AbilityBuilderWindow));
-        _window.minSize = new Vector2(600, 400);
+        _window.minSize = new Vector2(600, 450);
         _window.Show();
     }
 
@@ -147,6 +149,12 @@ public class AbilityBuilderWindow : EditorWindow
         GUILayout.Label("Cost");
         _magicalData._cost = EditorGUILayout.IntField(_magicalData._cost);
 
+        if (GUILayout.Button("Create Ability", GUILayout.Height(50)))
+        {
+            CreateAbilityData("Magical");
+
+        }
+
         GUILayout.EndArea();
 
     }
@@ -176,6 +184,12 @@ public class AbilityBuilderWindow : EditorWindow
         GUILayout.Label("Cost");
         _physicalData._cost = EditorGUILayout.IntField(_physicalData._cost);
 
+        if (GUILayout.Button("Create Ability", GUILayout.Height(50)))
+        {
+            CreateAbilityData("Physical");
+
+        }
+
         GUILayout.EndArea();
 
     }
@@ -195,48 +209,191 @@ public class AbilityBuilderWindow : EditorWindow
 
     }
 
-    public class CreateList : EditorWindow
+    void CreateAbilityData(string type) 
     {
-        public enum ListType
+        if(type == "Magical")
         {
-            Magical,
-            Physical
+            string dataPath = "Assets/Resources/AbilityData/Data/";
+
+            dataPath += "Magical/" + MagicInfo._name + ".asset";
+            AssetDatabase.CreateAsset(MagicInfo, dataPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            InitData();
+        }
+        else if (type == "Physical")
+        {
+            string dataPath = "Assets/Resources/AbilityData/Data/";
+
+            dataPath += "Physical/" + PhysicInfo._name + ".asset";
+            AssetDatabase.CreateAsset(PhysicInfo, dataPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            InitData();
+        }
+    }
+
+    
+}
+public class CreateList : EditorWindow
+{
+    Texture2D _headerSectionTexture;
+    Texture2D _listSectionTexture;
+
+    Color _headerSectionColor = new Color(22f / 255f, 165f / 255f, 177f / 255f, 1);
+    Color _listSectionColor = new Color(0f / 255f, 160f / 255f, 80f / 255f, 1);
+
+    Rect _headerSection;
+    Rect _listSection;
+
+    public enum ListType
+    {
+        Magical,
+        Physical
+    }
+
+    static ListType _listType;
+    static CreateList _window;
+
+    static MagicList _magicList;
+    static PhysicList _physicList;
+
+    public static MagicList MagicListInfo { get { return _magicList; } }
+    public static PhysicList PhysicListInfo { get { return _physicList; } }
+
+
+    public static void OpenWindow(ListType type)
+    {
+        _listType = type;
+        _window = (CreateList)GetWindow(typeof(CreateList));
+        _window.minSize = new Vector2(250, 150);
+        _window.Show();
+    }
+
+    private void OnEnable()
+    {
+        InitTextures();
+        InitData();
+    }
+
+
+    public static void InitData()
+    {
+        _magicList = (MagicList)ScriptableObject.CreateInstance(typeof(MagicList));
+        _physicList = (PhysicList)ScriptableObject.CreateInstance(typeof(PhysicList));
+    }
+
+    void InitTextures()
+    {
+        _headerSectionTexture = new Texture2D(1, 1);
+        _headerSectionTexture.SetPixel(0, 0, _headerSectionColor);
+        _headerSectionTexture.Apply();
+
+        _listSectionTexture = new Texture2D(1, 1);
+        _listSectionTexture.SetPixel(0, 0, _listSectionColor);
+        _listSectionTexture.Apply();
+
+
+    }
+
+
+    private void OnGUI()
+    {
+        DrawLayouts();
+        DrawHeader();
+        DrawListSettings();
+        
+    }
+
+    void DrawLayouts()
+    {
+        _headerSection.x = 0;
+        _headerSection.y = 0;
+        _headerSection.width = Screen.width;
+        _headerSection.height = 50;
+
+        _listSection.x = 0;
+        _listSection.y = 50;
+        _listSection.width = Screen.width;
+        _listSection.height = Screen.height;
+
+        GUI.DrawTexture(_headerSection, _headerSectionTexture);
+        GUI.DrawTexture(_listSection, _listSectionTexture);
+
+
+    }
+
+
+    void DrawHeader()
+    {
+        GUILayout.BeginArea(_headerSection);
+
+        if (_listType == ListType.Magical)
+        {
+            GUILayout.Label("Create Magical Ability List");
+        }
+        else if (_listType == ListType.Physical)
+        {
+            GUILayout.Label("Create Physical Ability List");
         }
 
-        static ListType _listType;
-        static CreateList _window;
+        
 
-        static GameObject _test;
+        GUILayout.EndArea();
 
-        public static void OpenWindow(ListType type)
+
+    }
+
+    void DrawListSettings()
+    {
+        GUILayout.BeginArea(_listSection);
+
+        GUILayout.Label("List Name");
+        if(_listType == ListType.Magical)
         {
-            _listType = type;
-            _window = (CreateList)GetWindow(typeof(CreateList));
-            _window.minSize = new Vector2(350, 200);
-            _window.Show();
+            _magicList._name = EditorGUILayout.TextField(_magicList._name);
+            if (GUILayout.Button("Create Magical Ability List", GUILayout.Height(50)))
+            {
+                CreateAbilityList("Magical");
+
+            }
+
         }
-
-        private void OnGUI()
+        else if(_listType == ListType.Physical)
         {
-            if(_listType == ListType.Magical)
+            _physicList._name = EditorGUILayout.TextField(_physicList._name);
+            if (GUILayout.Button("Create Physical Ability List", GUILayout.Height(50)))
             {
-                if(GUILayout.Button("Test", GUILayout.Height(50)))
-                {
-
-                }
-
-            }else if (_listType == ListType.Physical)
-            {
+                CreateAbilityList("Physical");
 
             }
         }
+        
 
-        void SaveNewList()
+
+        GUILayout.EndArea();
+    }
+    void CreateAbilityList(string type)
+    {
+        if (type == "Magical")
         {
-            string _prefabPath;
-            string _newPrefabPath = "Assets/Prefabs/Lists/";
-            string dataPath = "Assets/Resourses/Scripts";
-        }
+            string dataPath = "Assets/Resources/AbilityData/Data/";
 
+            dataPath += "MagicalLists/" + MagicListInfo._name + ".asset";
+            AssetDatabase.CreateAsset(MagicListInfo, dataPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            InitData();
+        }
+        else if (type == "Physical")
+        {
+            string dataPath = "Assets/Resources/AbilityData/Data/";
+
+            dataPath += "PhysicalLists/" + PhysicListInfo._name + ".asset";
+            AssetDatabase.CreateAsset(PhysicListInfo, dataPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            InitData();
+        }
     }
 }

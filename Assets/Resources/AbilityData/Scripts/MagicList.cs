@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenuAttribute(fileName = "New Magical List", menuName = "Ability List/Magical List")]
-public class MagicList : ScriptableObject
+public class MagicList : AbilityList
 {
     public MagicalData[] _magicalDataList;
 

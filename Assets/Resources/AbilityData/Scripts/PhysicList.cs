@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenuAttribute(fileName = "New Physiical List", menuName = "Ability List/Physiical List")]
 
-public class PhysicList : ScriptableObject
+public class PhysicList : AbilityList
 {
     public PhysicalData[] _physicalDataList;
 
