@@ -21,6 +21,8 @@ public class AbilityBuilderWindow : EditorWindow
     Rect _magicalSection;
     Rect _listSection;
 
+    GUISkin _skin;
+
     static MagicalData _magicalData;
     static PhysicalData _physicalData;
 
@@ -35,7 +37,7 @@ public class AbilityBuilderWindow : EditorWindow
    static void OpenWindow()
     {
         AbilityBuilderWindow _window = (AbilityBuilderWindow)GetWindow(typeof(AbilityBuilderWindow));
-        _window.minSize = new Vector2(600, 450);
+        _window.minSize = new Vector2(600, 500);
         _window.Show();
     }
 
@@ -43,6 +45,7 @@ public class AbilityBuilderWindow : EditorWindow
     {
         InitTextures();
         InitData();
+        _skin = Resources.Load<GUISkin>("GUIStyle/AbilityBuilderSkin");
     }
 
     public static void InitData()
@@ -118,7 +121,7 @@ public class AbilityBuilderWindow : EditorWindow
     {
         GUILayout.BeginArea(_headerSection);
 
-        GUILayout.Label("Ability Builder");
+        GUILayout.Label("Ability Builder", _skin.GetStyle("Header1"));
 
         GUILayout.EndArea();
 
@@ -129,7 +132,7 @@ public class AbilityBuilderWindow : EditorWindow
     {
         GUILayout.BeginArea(_magicalSection);
 
-        GUILayout.Label("Magical Ability");
+        GUILayout.Label("Magical Ability", _skin.GetStyle("MagicalAbility"));
 
         GUILayout.Label("Ability Name");
         _magicalData._name = EditorGUILayout.TextField(_magicalData._name);
@@ -149,11 +152,18 @@ public class AbilityBuilderWindow : EditorWindow
         GUILayout.Label("Cost");
         _magicalData._cost = EditorGUILayout.IntField(_magicalData._cost);
 
-        if (GUILayout.Button("Create Ability", GUILayout.Height(50)))
+        if(_magicalData._name == null)
+        {
+            EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+        }else if (_magicalData._name.Length < 1){
+            EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+        }
+        else if (GUILayout.Button("Create Ability", GUILayout.Height(50)))
         {
             CreateAbilityData("Magical");
 
         }
+
 
         GUILayout.EndArea();
 
@@ -164,7 +174,7 @@ public class AbilityBuilderWindow : EditorWindow
     {
         GUILayout.BeginArea(_physicalSection);
 
-        GUILayout.Label("Physical Ability");
+        GUILayout.Label("Physical Ability", _skin.GetStyle("PhysicalAbility"));
 
         GUILayout.Label("Ability Name");
         _physicalData._name = EditorGUILayout.TextField(_physicalData._name);
@@ -184,11 +194,20 @@ public class AbilityBuilderWindow : EditorWindow
         GUILayout.Label("Cost");
         _physicalData._cost = EditorGUILayout.IntField(_physicalData._cost);
 
-        if (GUILayout.Button("Create Ability", GUILayout.Height(50)))
+        
+        if(_physicalData._name == null)
+        {
+            EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+        }
+        else if (_physicalData._name.Length < 1)
+        {
+            EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+        }else if(GUILayout.Button("Create Ability", GUILayout.Height(50)))
         {
             CreateAbilityData("Physical");
 
         }
+
 
         GUILayout.EndArea();
 
@@ -246,6 +265,8 @@ public class CreateList : EditorWindow
     Rect _headerSection;
     Rect _listSection;
 
+    GUISkin _skin;
+
     public enum ListType
     {
         Magical,
@@ -274,6 +295,7 @@ public class CreateList : EditorWindow
     {
         InitTextures();
         InitData();
+        _skin = Resources.Load<GUISkin>("GUIStyle/AbilityBuilderSkin");
     }
 
 
@@ -330,11 +352,11 @@ public class CreateList : EditorWindow
 
         if (_listType == ListType.Magical)
         {
-            GUILayout.Label("Create Magical Ability List");
+            GUILayout.Label("Create Magical Ability List", _skin.GetStyle("Header2"));
         }
         else if (_listType == ListType.Physical)
         {
-            GUILayout.Label("Create Physical Ability List");
+            GUILayout.Label("Create Physical Ability List", _skin.GetStyle("Header2"));
         }
 
         
@@ -352,21 +374,40 @@ public class CreateList : EditorWindow
         if(_listType == ListType.Magical)
         {
             _magicList._name = EditorGUILayout.TextField(_magicList._name);
-            if (GUILayout.Button("Create Magical Ability List", GUILayout.Height(50)))
+            if (_magicList._name == null)
+            {
+                EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+            }
+            else if (_magicList._name.Length < 1)
+            {
+                EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+            }
+            else if (GUILayout.Button("Create Magical Ability List", GUILayout.Height(50)))
             {
                 CreateAbilityList("Magical");
-
+                _window.Close();
             }
+
 
         }
         else if(_listType == ListType.Physical)
         {
             _physicList._name = EditorGUILayout.TextField(_physicList._name);
-            if (GUILayout.Button("Create Physical Ability List", GUILayout.Height(50)))
+            if (_physicList._name == null)
+            {
+                EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+            }
+            else if (_physicList._name.Length < 1)
+            {
+                EditorGUILayout.HelpBox("The ability needs a name before create.", MessageType.Warning);
+            }
+            else if (GUILayout.Button("Create Physical Ability List", GUILayout.Height(50)))
             {
                 CreateAbilityList("Physical");
+                _window.Close();
 
             }
+
         }
         
 

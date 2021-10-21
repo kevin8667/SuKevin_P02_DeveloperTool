@@ -12,7 +12,7 @@ public class MagicalData : AbilityData
 
     public override void Use()
     {
-        Debug.Log(_magicalType);
+        Debug.Log(_name);
     }
 
 }

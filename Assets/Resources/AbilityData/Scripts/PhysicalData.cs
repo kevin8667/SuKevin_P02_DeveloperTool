@@ -12,7 +12,7 @@ public class PhysicalData : AbilityData
 
     public override void Use()
     {
-
+        Debug.Log(_name);
     }
 
 }

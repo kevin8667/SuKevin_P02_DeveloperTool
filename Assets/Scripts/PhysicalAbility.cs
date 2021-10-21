@@ -12,7 +12,7 @@ public class PhysicalAbility : MonoBehaviour
     {
         _physicalData = _physicList._physicalDataList;
 
-
+        _currentAbility = 0;
     }
     private void Update()
     {

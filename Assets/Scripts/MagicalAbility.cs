@@ -12,7 +12,7 @@ public class MagicalAbility : MonoBehaviour
     {
         _magicalData = _magicList._magicalDataList;
 
-        _currentAbility = 1;
+        _currentAbility = 0;
     }
 
     private void Update()

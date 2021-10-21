@@ -35,6 +35,7 @@ namespace Types
 
     public enum ElementalType 
     {
+        None,
         Fire,
         Wind,
         Ice,
