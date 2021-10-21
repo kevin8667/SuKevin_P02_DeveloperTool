@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba53d3576e3bbd64a8f39a16ba1bdebb, type: 3}
-  m_Name: New Magical List
+  m_Script: {fileID: 11500000, guid: b890ded6f6921024babdd550c38df7ee, type: 3}
+  m_Name: ExamplePhysicalAbility
   m_EditorClassIdentifier: 
-  _magicalDataList: []
+  _power: 0
+  _cost: 0
+  _name: 
+  _physicalType: 0
+  _physicalAttributeType: 0
+  _elementalType: 0
